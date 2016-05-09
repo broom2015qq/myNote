@@ -1,0 +1,26 @@
+<!--笔记详细内容-->
+<%- include header.ejs %>
+<div class="text-center page-title" xmlns="http://www.w3.org/1999/html"></div>
+<div class="container">
+    <div class="row">
+            <table class="table table-hover">
+                <caption>笔记详情</caption>
+                <thead>
+                <tr>
+                    <th><h1 class="text-center"><%= art.title%></h1></th>
+                </tr>
+                </thead>
+            </table>
+                <div class="article-box">
+                    <p align="center">
+                        <span class="label label-info"><%= art.tag%> </span>
+                        <span class="create-time">
+                           <span class="text-bold">时间:</span>
+                            <%= moment(art.createTime).locale('zh-cn').format('LL HH:mm:ss') %>
+                        </span>
+                    </p>
+                    <p><%= art.content%></p>
+                </div>
+    </div>
+</div>
+<%- include footer.ejs %>

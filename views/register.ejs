@@ -1,0 +1,108 @@
+<!-- 注册的表单-->
+<%- include header.ejs %>
+    <div class="text-center page-title">新用户注册</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-4">
+                <form method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="用户名" onblur="checkUser()"/> <span id="usertips"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="密码" onblur="checkPass()"><span id="passwordtips"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="passwordRepeat" name="passwordRepeat" placeholder="确认密码" onblur="checkPass()"></span>
+                    </div>
+                    <button type="submit"  onclick="postData(this); return false" class="btn btn-default">注册</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+<div class="modal fade" id="msg-box">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <p id="content">One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script type="text/javascript">
+    function postData (_this){
+        $.post('/register',{
+            username:$('#username').val(),
+            password:$('#password').val(),
+            passwordRepeat:$('#passwordRepeat').val()
+        },function(data){
+            $('#content').html(data.msg);
+            $('#msg-box').modal('show');
+            if(data.status){
+                window.location.href = '/';
+            }
+        });
+    }
+
+    function checkUser()
+    {
+        var username = $("#username").val();
+        if (!username.match( /^[\u4E00-\u9FA5a-zA-Z0-9_]{3,20}$/)) {
+            var msg = "汉字、英文字母、数字、下划线组成、3-20位";
+            document.getElementById("username").focus();
+            $("#usertips").html(msg);
+        } else {
+            $("#usertips").html('');
+        }
+    }
+    function checkPass()
+    {
+        var password = $("#password").val();
+        var count1 =0;var count2 =0;var count3 =0;
+        if(password.trim().length >= 6){
+            if(password.match(/([a-z])+/)){
+                count1++;
+            }
+            if(password.match(/([0-9])+/)){
+                count2++;
+            }
+            if(password.match(/([A-Z])+/)){
+                count3++;
+            }
+            if(count1==0||count2==0||count3==0){
+                var msg = "必须同时包含数字、小写字母、大写字母";
+                document.getElementById("password").focus();
+                $("#passwordtips").html(msg);
+            }
+            else {
+                $("#passwordtips").html('');
+            }
+        }else{
+            var msg = "密码不得小于6位!";
+            document.getElementById("password").focus();
+            $("#passwordtips").html(msg);
+        }
+    }
+
+
+
+
+
+
+</script>
+
+<%- include footer.ejs %>
